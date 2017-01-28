@@ -53,6 +53,19 @@ func setTitle(values *[]string, class string) {
 	}
 }
 
+func convertWeatherToEmoji(weather string) string {
+	switch weather {
+	case "晴れ":
+		return "☀"
+	case "曇り":
+		return "☁"
+	case "雨":
+		return "☔"
+	default:
+		return weather
+	}
+}
+
 func main() {
 	config, err := loadConfig()
 	if err != nil {
@@ -76,7 +89,11 @@ func main() {
 			setTitle(&values, class)
 			for _, value := range strings.Split(s.Find(class).Text(), "\n") {
 				if len(value) > 0 {
-					values = append(values, value)
+					if class == ".weather" {
+						values = append(values, convertWeatherToEmoji(value))
+					} else {
+						values = append(values, value)
+					}
 				}
 			}
 			table.Append(values)
