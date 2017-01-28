@@ -13,12 +13,21 @@ import (
 	yaml "gopkg.in/yaml.v2"
 
 	"github.com/PuerkitoBio/goquery"
+	"github.com/fatih/color"
 	"github.com/olekukonko/tablewriter"
 )
 
 type config struct {
 	Home string `yaml:home"`
 }
+
+var (
+	red          = color.New(color.FgRed, color.Bold).SprintFunc()
+	blue         = color.New(color.FgBlue, color.Bold).SprintFunc()
+	white        = color.New(color.FgWhite, color.Bold).SprintFunc()
+	reverseVideo = color.New(color.ReverseVideo).SprintFunc()
+	daySpace     = "   "
+)
 
 func loadConfig() (*config, error) {
 	home := os.Getenv("HOME")
@@ -56,11 +65,11 @@ func setTitle(values *[]string, class string) {
 func convertWeatherToEmoji(weather string) string {
 	switch weather {
 	case "晴れ":
-		return "☀"
+		return red("☀")
 	case "曇り":
-		return "☁"
+		return white("☁")
 	case "雨":
-		return "☔"
+		return blue("☔")
 	default:
 		return weather
 	}
