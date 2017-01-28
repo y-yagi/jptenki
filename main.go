@@ -43,7 +43,7 @@ func showHeader(w io.Writer, header string) {
 	fmt.Fprintf(w, "─────────────────────────────────────\n")
 }
 
-func setInitialValue(values *[]string, class string) {
+func setTitle(values *[]string, class string) {
 	if class == ".hour" {
 		*values = append(*values, "時間")
 	} else if class == ".temperature" {
@@ -73,7 +73,7 @@ func main() {
 	doc.Find(".leisurePinpointWeather").Each(func(i int, s *goquery.Selection) {
 		header := s.Find(".head td").Text()
 		for _, class := range targetClasses {
-			setInitialValue(&values, class)
+			setTitle(&values, class)
 			for _, value := range strings.Split(s.Find(class).Text(), "\n") {
 				if len(value) > 0 {
 					values = append(values, value)
