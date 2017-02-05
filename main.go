@@ -22,11 +22,9 @@ type config struct {
 }
 
 var (
-	red          = color.New(color.FgRed, color.Bold).SprintFunc()
-	blue         = color.New(color.FgBlue, color.Bold).SprintFunc()
-	white        = color.New(color.FgWhite, color.Bold).SprintFunc()
-	reverseVideo = color.New(color.ReverseVideo).SprintFunc()
-	daySpace     = "   "
+	red   = color.New(color.FgRed, color.Bold).SprintFunc()
+	blue  = color.New(color.FgBlue, color.Bold).SprintFunc()
+	white = color.New(color.FgWhite, color.Bold).SprintFunc()
 )
 
 func loadConfig() (*config, error) {
