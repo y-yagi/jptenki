@@ -18,7 +18,8 @@ import (
 )
 
 type config struct {
-	Home string `yaml:home"`
+	Home    string            `yaml:home`
+	Aliases map[string]string `yaml:aliases`
 }
 
 var (
@@ -76,13 +77,25 @@ func convertWeatherToEmoji(weather string) string {
 }
 
 func main() {
+	var url string
+
 	config, err := loadConfig()
 	if err != nil {
-		fmt.Printf("Config file load Error: %v\nPlease create a config file.\n", err)
+		fmt.Printf("config file load Error: %v\nPlease create a config file.\n", err)
 		os.Exit(1)
 	}
 
-	doc, err := goquery.NewDocument(config.Home)
+	if len(os.Args) > 1 {
+		url = config.Aliases[os.Args[1]]
+		if len(url) == 0 {
+			fmt.Printf("'%s' is not defined. Please add alias to config file.\n", os.Args[1])
+			os.Exit(1)
+		}
+	} else {
+		url = config.Home
+	}
+
+	doc, err := goquery.NewDocument(url)
 	if err != nil {
 		log.Fatal(err)
 	}
