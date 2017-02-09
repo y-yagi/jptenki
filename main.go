@@ -71,6 +71,8 @@ func convertWeatherToEmoji(weather string) string {
 		return blue("☔")
 	case "小雨":
 		return blue("🌂")
+	case "みぞれ":
+		return white("❅")
 	default:
 		return weather
 	}
