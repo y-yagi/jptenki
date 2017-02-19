@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
-	"log"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -99,7 +98,8 @@ func main() {
 
 	doc, err := goquery.NewDocument(url)
 	if err != nil {
-		log.Fatal(err)
+		fmt.Printf("Document get error: %v.\n", err)
+		os.Exit(1)
 	}
 
 	var targetClasses = []string{".hour", ".weather", ".temperature", ".prob_precip", ".windBlow", ".windSpeed"}
