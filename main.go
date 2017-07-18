@@ -112,6 +112,7 @@ func main() {
 		for _, class := range targetClasses {
 			setTitle(&values, class)
 			for _, value := range strings.Split(s.Find(class).Text(), "\n") {
+				value := strings.TrimSpace(value)
 				if len(value) > 0 {
 					if class == ".weather" {
 						values = append(values, convertWeatherToEmoji(value))
