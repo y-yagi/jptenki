@@ -107,7 +107,7 @@ func main() {
 	w := os.Stdout
 	table := tablewriter.NewWriter(w)
 
-	doc.Find(".leisurePinpointWeather").Each(func(i int, s *goquery.Selection) {
+	doc.Find("#forecast-point-1h-today").Each(func(i int, s *goquery.Selection) {
 		header := s.Find(".head td").Text()
 		for _, class := range targetClasses {
 			setTitle(&values, class)
