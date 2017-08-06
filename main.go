@@ -103,31 +103,34 @@ func main() {
 	}
 
 	var targetClasses = []string{".hour", ".weather", ".temperature", ".prob_precip", ".wind-blow", ".wind-speed"}
+	var tableIDs = []string{"#forecast-point-1h-today", "#forecast-point-1h-tomorrow", "#forecast-point-1h-dayaftertomorrow"}
 	var values = []string{}
 	w := os.Stdout
 	table := tablewriter.NewWriter(w)
 
-	doc.Find("#forecast-point-1h-today").Each(func(i int, s *goquery.Selection) {
-		header := s.Find(".head td").Text()
-		for _, class := range targetClasses {
-			setTitle(&values, class)
-			for _, value := range strings.Split(s.Find(class).Text(), "\n") {
-				value := strings.TrimSpace(value)
-				if len(value) > 0 {
-					if class == ".weather" {
-						values = append(values, convertWeatherToEmoji(value))
-					} else {
-						values = append(values, value)
+	for _, id := range tableIDs {
+		doc.Find(id).Each(func(i int, s *goquery.Selection) {
+			header := s.Find(".head td").Text()
+			for _, class := range targetClasses {
+				setTitle(&values, class)
+				for _, value := range strings.Split(s.Find(class).Text(), "\n") {
+					value := strings.TrimSpace(value)
+					if len(value) > 0 {
+						if class == ".weather" {
+							values = append(values, convertWeatherToEmoji(value))
+						} else {
+							values = append(values, value)
+						}
 					}
 				}
+				table.Append(values)
+				values = nil
 			}
-			table.Append(values)
-			values = nil
-		}
 
-		showHeader(w, header)
-		table.Render()
-		fmt.Fprintf(w, "\n")
-		table = tablewriter.NewWriter(w)
-	})
+			showHeader(w, header)
+			table.Render()
+			fmt.Fprintf(w, "\n")
+			table = tablewriter.NewWriter(w)
+		})
+	}
 }
