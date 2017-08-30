@@ -66,7 +66,7 @@ func convertWeatherToEmoji(weather string) string {
 		return red("☀")
 	case "曇り":
 		return white("☁")
-	case "雨":
+	case "雨", "強雨":
 		return blue("☔")
 	case "小雨", "弱雨":
 		return blue("🌂")
