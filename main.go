@@ -17,8 +17,8 @@ import (
 )
 
 type config struct {
-	Home    string            `yaml:home`
-	Aliases map[string]string `yaml:aliases`
+	Home    string            `yaml:"home"`
+	Aliases map[string]string `yaml:"aliases"`
 }
 
 var (
