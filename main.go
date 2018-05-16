@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
+	"net/http"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -98,9 +99,21 @@ func main() {
 		url = config.Home
 	}
 
-	doc, err := goquery.NewDocument(url)
+	res, err := http.Get(url)
 	if err != nil {
-		fmt.Printf("Document get error: %v.\n", err)
+		fmt.Printf("Page get error: %v.\n", err)
+		os.Exit(1)
+	}
+
+	defer res.Body.Close()
+	if res.StatusCode != 200 {
+		fmt.Printf("Status code error: %d %s", res.StatusCode, res.Status)
+		os.Exit(1)
+	}
+
+	doc, err := goquery.NewDocumentFromReader(res.Body)
+	if err != nil {
+		fmt.Printf("Document read error: %v.\n", err)
 		os.Exit(1)
 	}
 
