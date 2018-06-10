@@ -58,6 +58,8 @@ func setTitle(values *[]string, class string) {
 		*values = append(*values, "気温")
 	} else if class == ".wind-speed" {
 		*values = append(*values, "")
+	} else if class == ".precipitation" {
+		*values = append(*values, "降水量")
 	}
 }
 
@@ -117,7 +119,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	var targetClasses = []string{".hour", ".weather", ".temperature", ".prob_precip", ".wind-blow", ".wind-speed"}
+	var targetClasses = []string{".hour", ".weather", ".temperature", ".prob_precip", ".precipitation", ".wind-blow", ".wind-speed"}
 	var tableIDs = []string{"#forecast-point-1h-today", "#forecast-point-1h-tomorrow", "#forecast-point-1h-dayaftertomorrow"}
 	var values = []string{}
 	w := os.Stdout
