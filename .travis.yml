@@ -4,8 +4,9 @@ go:
   - "1.11"
 
 install:
-  - go get -u github.com/golang/lint/golint
+  - GO111MODULE=on go mod download
+  - GO111MODULE=on go get -u github.com/golang/lint/golint
 
 script:
-  - go vet
-  - golint
+  - GO111MODULE=on go vet
+  - GO111MODULE=on golint
