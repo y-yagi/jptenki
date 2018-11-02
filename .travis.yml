@@ -3,10 +3,13 @@ language: go
 go:
   - "1.11"
 
+env:
+  - GO111MODULE=on
+
 install:
-  - GO111MODULE=on go mod download
-  - GO111MODULE=on go get -u github.com/golang/lint/golint
+  - go mod download
+  - go get -u github.com/golang/lint/golint
 
 script:
-  - GO111MODULE=on go vet
-  - GO111MODULE=on golint
+  - go vet
+  - golint
