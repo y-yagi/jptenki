@@ -3,23 +3,21 @@ package main
 import (
 	"fmt"
 	"io"
-	"io/ioutil"
 	"net/http"
 	"os"
-	"path/filepath"
-	"runtime"
 	"strings"
-
-	yaml "gopkg.in/yaml.v2"
 
 	"github.com/PuerkitoBio/goquery"
 	"github.com/fatih/color"
 	"github.com/olekukonko/tablewriter"
+	"github.com/y-yagi/configure"
 )
 
+const cmd = "jptenki"
+
 type config struct {
-	Home    string            `yaml:"home"`
-	Aliases map[string]string `yaml:"aliases"`
+	Home   string            `toml:"home"`
+	Places map[string]string `yaml:"places"`
 }
 
 var (
@@ -27,23 +25,6 @@ var (
 	blue  = color.New(color.FgBlue, color.Bold).SprintFunc()
 	white = color.New(color.FgWhite, color.Bold).SprintFunc()
 )
-
-func loadConfig() (*config, error) {
-	home := os.Getenv("HOME")
-	if home == "" && runtime.GOOS == "windows" {
-		home = os.Getenv("APPDATA")
-	}
-
-	fname := filepath.Join(home, ".config", "jptenki", "config.yml")
-	buf, err := ioutil.ReadFile(fname)
-	if err != nil {
-		return nil, err
-	}
-
-	var cfg config
-	err = yaml.Unmarshal(buf, &cfg)
-	return &cfg, err
-}
 
 func showHeader(w io.Writer, header string) {
 	fmt.Fprintf(w, "─────────────────────────────────────\n")
@@ -84,21 +65,22 @@ func convertWeatherToEmoji(weather string) string {
 
 func main() {
 	var url string
+	var cfg config
 
-	config, err := loadConfig()
+	err := configure.Load(cmd, &cfg)
 	if err != nil {
 		fmt.Printf("config file load Error: %v\nPlease create a config file.\n", err)
 		os.Exit(1)
 	}
 
 	if len(os.Args) > 1 {
-		url = config.Aliases[os.Args[1]]
+		url = cfg.Places[os.Args[1]]
 		if len(url) == 0 {
 			fmt.Printf("'%s' is not defined. Please add alias to config file.\n", os.Args[1])
 			os.Exit(1)
 		}
 	} else {
-		url = config.Home
+		url = cfg.Places[cfg.Home]
 	}
 
 	res, err := http.Get(url)
