@@ -66,6 +66,7 @@ func convertWeatherToEmoji(weather string) string {
 func main() {
 	var url string
 	var cfg config
+	var area string
 
 	err := configure.Load(cmd, &cfg)
 	if err != nil {
@@ -74,13 +75,15 @@ func main() {
 	}
 
 	if len(os.Args) > 1 {
-		url = cfg.Places[os.Args[1]]
-		if len(url) == 0 {
-			fmt.Printf("'%s' is not defined. Please add alias to config file.\n", os.Args[1])
-			os.Exit(1)
-		}
+		area = os.Args[1]
 	} else {
-		url = cfg.Places[cfg.Home]
+		area = cfg.Home
+	}
+
+	url = cfg.Places[area]
+	if len(url) == 0 {
+		fmt.Printf("'%s' is not defined. Please add alias to config file.\n", area)
+		os.Exit(1)
 	}
 
 	res, err := http.Get(url)
