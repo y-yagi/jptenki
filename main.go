@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"io"
 	"net/http"
@@ -67,6 +68,20 @@ func main() {
 	var url string
 	var cfg config
 	var area string
+	var config bool
+
+	flags := flag.NewFlagSet(cmd, flag.ExitOnError)
+	flags.BoolVar(&config, "c", false, "Edit config.")
+	flags.Parse(os.Args[1:])
+
+	if config {
+		if err := cmdConfig(); err != nil {
+			fmt.Printf("Error: %v\n", err)
+			os.Exit(1)
+		}
+
+		return
+	}
 
 	err := configure.Load(cmd, &cfg)
 	if err != nil {
@@ -135,4 +150,13 @@ func main() {
 			table = tablewriter.NewWriter(w)
 		})
 	}
+}
+
+func cmdConfig() error {
+	editor := os.Getenv("EDITOR")
+	if len(editor) == 0 {
+		editor = "vim"
+	}
+
+	return configure.Edit(cmd, editor)
 }
