@@ -18,7 +18,7 @@ const cmd = "jptenki"
 
 type config struct {
 	Home   string            `toml:"home"`
-	Places map[string]string `yaml:"places"`
+	Places map[string]string `toml:"places"`
 }
 
 var (
