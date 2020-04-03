@@ -119,7 +119,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	var targetClasses = []string{".hour", ".weather", ".temperature", ".prob_precip", ".precipitation", ".wind-blow", ".wind-speed"}
+	var targetClasses = []string{".hour", ".weather", ".temperature", ".prob_precip", ".precipitation", ".humidity", ".wind-blow", ".wind-speed"}
 	var tableIDs = []string{"#forecast-point-1h-today", "#forecast-point-1h-tomorrow", "#forecast-point-1h-dayaftertomorrow"}
 	var values = []string{}
 	w := os.Stdout
